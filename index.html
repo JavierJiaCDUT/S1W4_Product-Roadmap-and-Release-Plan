@@ -3,12 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive learning module for Agile Project Roadmap and Release Planning. Learn product roadmap creation, release planning, story point estimation, and Planning Poker techniques.">
+    <meta name="keywords" content="Agile, Product Roadmap, Release Planning, Story Points, Planning Poker, Velocity, PMBOK, Scrum">
+    <meta name="author" content="CS/SE Agile Course">
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Agile Project Roadmap & Release Planning">
+    <meta property="og:description" content="Learn product roadmap, release planning, and agile estimation through interactive demonstrations and hands-on exercises.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Agile Project Roadmap & Release Planning">
+    <meta name="twitter:description" content="Interactive learning module for Agile project planning and estimation.">
+
     <title>Week 4: Agile Project Roadmap and Release Planning</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- External Resources with SRI -->
+    <script src="https://cdn.tailwindcss.com"
+            integrity="sha384-T5zw+oZgJhJKP6pMCaUbuGEhInU3C5pL4qv0MTzOEwWhDTWd/gCdQR9fPPdJwNHh"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+            integrity="sha384-ChbEfSRDLZO8VCIRgATAXLd7P0hLJ2x3ZrO3JlrF1NqP0eDEg/7WElIlBLGSBiHz"
+            crossorigin="anonymous"></script>
+
+    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
     <!-- Chosen Palette: Warm Neutrals -->
     <!-- Application Structure Plan: The application is structured into five thematic, navigable sections corresponding to the lecture's main topics: Core Philosophy, Product Roadmap, Release Plan, Agile Estimation, and PMBOK Connection. This tab-based structure allows users non-linear access to content, empowering them to explore topics based on interest rather than following a rigid, linear path. This design choice transforms the static lecture plan into an interactive learning module, enhancing usability and engagement by breaking down the content into digestible, self-contained chunks. -->
     <!-- Visualization & Content Choices: 
@@ -20,70 +47,51 @@
         6.  Report Info: PMBOK & Agile Relationship Explanation -> Goal: Explain/Synthesize -> Viz: Button and a collapsible text block -> Interaction: User clicks a button to reveal a detailed, AI-generated explanation of the relationship between Agile and PMBOK planning concepts. -> Justification: Offers a dynamic way to dive deeper into a key theoretical connection, providing richer context than static text alone. -> Library/Method: HTML/Tailwind, JS, Gemini API.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <style>
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background-color: #fdfcf9;
-            color: #334155;
-        }
-        .nav-button {
-            transition: all 0.3s ease;
-            border-bottom: 4px solid transparent;
-        }
-        .nav-button.active {
-            color: #0d9488;
-            border-bottom-color: #0d9488;
-        }
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-        }
-        .diagram-item {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .diagram-item.selected {
-            background-color: #ccfbf1;
-            transform: scale(1.05);
-            box-shadow: 0 4px 14px 0 rgba(13, 148, 136, 0.2);
-        }
-        .poker-card {
-            transition: all 0.2s ease-in-out;
-        }
-        .poker-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 320px;
-            max-height: 400px;
-        }
-    </style>
 </head>
 <body class="antialiased">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
 
     <div class="container mx-auto px-4 py-8 md:py-12">
         <header class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-bold text-teal-700">Product Planning: Agile Project Roadmap and Release Plan</h1>
         </header>
 
-        <nav class="flex flex-wrap justify-center border-b-2 border-slate-200 mb-8">
-            <button data-target="intro" class="nav-button active text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4">1. Core Concepts</button>
-            <button data-target="roadmap" class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4">2. Product Roadmap</button>
-            <button data-target="release" class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4">3. Release Plan</button>
-            <button data-target="estimation" class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4">4. Agile Estimation</button>
-            <button data-target="pmbok" class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4">5. PMBOK</button>
+        <nav class="flex flex-wrap justify-center border-b-2 border-slate-200 mb-8" role="tablist" aria-label="Learning module navigation">
+            <button data-target="intro"
+                    class="nav-button active text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="intro"
+                    id="tab-intro">1. Core Concepts</button>
+            <button data-target="roadmap"
+                    class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="roadmap"
+                    id="tab-roadmap">2. Product Roadmap</button>
+            <button data-target="release"
+                    class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="release"
+                    id="tab-release">3. Release Plan</button>
+            <button data-target="estimation"
+                    class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="estimation"
+                    id="tab-estimation">4. Agile Estimation</button>
+            <button data-target="pmbok"
+                    class="nav-button text-sm md:text-base font-medium px-4 py-3 md:px-6 md:py-4"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="pmbok"
+                    id="tab-pmbok">5. PMBOK</button>
         </nav>
 
-        <main>
-            <section id="intro" class="content-section active">
+        <main id="main-content">
+            <section id="intro" class="content-section active" role="tabpanel" aria-labelledby="tab-intro">
                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
                     <h2 class="text-2xl font-bold text-teal-600 mb-4">The bridge from 'vision' to 'action'</h2>
                     <p class="mb-6 text-slate-600">In the past few weeks, we started with innovative ideas and used user stories and user story maps to refine and structure vague requirements and establish a product vision. Now we have a vision and a list of prioritised requirements, but how do we turn them into an executable, rhythmic development plan? This is where agile project planning comes in. Its goal is to provide direction in the face of uncertainty and allow for adjustments as we learn.</p>
@@ -110,24 +118,36 @@
                 </div>
             </section>
 
-            <section id="roadmap" class="content-section">
+            <section id="roadmap" class="content-section" role="tabpanel" aria-labelledby="tab-roadmap">
                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
                     <h2 class="text-2xl font-bold text-teal-600 mb-2">Product Roadmap</h2>
                     <p class="mb-6 text-slate-600">A product roadmap is a high-level view of how the product will evolve over time, communicating the product's future direction, key milestones, and value delivery. It's not a detailed Gantt chart, but rather a strategic document that answers "Where are we heading?" Click on different levels in the diagram below to explore their components.</p>
                     <div class="lg:flex lg:space-x-8">
                         <div class="lg:w-1/2">
-                            <div class="space-y-4 text-center">
-                                <div id="diagram-vision" class="diagram-item p-4 border-2 border-amber-300 rounded-lg bg-amber-50">
+                            <div class="space-y-4 text-center" role="group" aria-label="Product planning hierarchy">
+                                <div id="diagram-vision"
+                                     class="diagram-item p-4 border-2 border-amber-300 rounded-lg bg-amber-50"
+                                     role="button"
+                                     tabindex="0"
+                                     aria-label="Vision level - Click to view details">
                                     <h3 class="text-xl font-bold text-amber-800">Vision</h3>
                                     <p class="text-sm text-amber-700">Fundamental Driver</p>
                                 </div>
-                                <div class="text-2xl text-slate-400">▼</div>
-                                <div id="diagram-roadmap" class="diagram-item p-4 border-2 border-sky-300 rounded-lg bg-sky-50">
+                                <div class="text-2xl text-slate-400" aria-hidden="true">▼</div>
+                                <div id="diagram-roadmap"
+                                     class="diagram-item p-4 border-2 border-sky-300 rounded-lg bg-sky-50"
+                                     role="button"
+                                     tabindex="0"
+                                     aria-label="Product Roadmap level - Click to view details">
                                     <h3 class="text-xl font-bold text-sky-800">Product Roadmap</h3>
                                     <p class="text-sm text-sky-700">Strategic Direction</p>
                                 </div>
-                                <div class="text-2xl text-slate-400">▼</div>
-                                <div id="diagram-release" class="diagram-item p-4 border-2 border-emerald-300 rounded-lg bg-emerald-50">
+                                <div class="text-2xl text-slate-400" aria-hidden="true">▼</div>
+                                <div id="diagram-release"
+                                     class="diagram-item p-4 border-2 border-emerald-300 rounded-lg bg-emerald-50"
+                                     role="button"
+                                     tabindex="0"
+                                     aria-label="Release Plan level - Click to view details">
                                     <h3 class="text-xl font-bold text-emerald-800">Release Plan</h3>
                                      <p class="text-sm text-emerald-700">Tactical Execution</p>
                                 </div>
@@ -144,8 +164,8 @@
                     </div>
                 </div>
             </section>
-            
-            <section id="release" class="content-section">
+
+            <section id="release" class="content-section" role="tabpanel" aria-labelledby="tab-release">
                  <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
                     <h2 class="text-2xl font-bold text-teal-600 mb-2">Release Planning</h2>
                     <p class="mb-6 text-slate-600">Release planning is the next layer below the product roadmap, providing more specific details about which features will be delivered in a particular release and when. It transforms high-level roadmap themes into executable feature sets, serving as the critical bridge connecting strategy with tactics.</p>
@@ -177,10 +197,15 @@
                     <div class="bg-teal-50 p-6 md:p-8 rounded-xl shadow-sm mt-8">
                         <h2 class="text-2xl font-bold text-teal-700 mb-4">✨ Release Planning Assistant</h2>
                         <p class="mb-4 text-slate-600">Input a release goal and let AI help you generate a preliminary release plan outline.</p>
-                        <textarea id="release-goal-input" class="w-full h-16 p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4" placeholder="Example: Launch a mobile-first MVP for photo sharing with core features for quick image uploads and social interactions."></textarea>
-                        <button id="generate-release-btn" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                        <textarea id="release-goal-input"
+                                  class="w-full h-16 p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4"
+                                  placeholder="Example: Launch a mobile-first MVP for photo sharing with core features for quick image uploads and social interactions."
+                                  aria-label="Enter release goal"></textarea>
+                        <button id="generate-release-btn"
+                                class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center"
+                                aria-label="Generate release plan based on goal">
                             <span id="generate-release-text">Generate Release Plan ✨</span>
-                            <span id="generate-release-spinner" class="hidden animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full ml-2"></span>
+                            <span id="generate-release-spinner" class="hidden animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full ml-2" aria-hidden="true"></span>
                         </button>
                         <div id="generated-release-output" class="bg-white p-4 mt-6 rounded-lg border border-slate-200 space-y-4">
                             <p id="release-output-placeholder" class="text-slate-400 italic text-center">Generated release plan outline will appear here...</p>
@@ -189,7 +214,7 @@
                 </div>
             </section>
 
-            <section id="estimation" class="content-section">
+            <section id="estimation" class="content-section" role="tabpanel" aria-labelledby="tab-estimation">
                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
                     <h2 class="text-2xl font-bold text-teal-600 mb-2">Agile Estimation: Story Points & Team Velocity</h2>
                     <p class="mb-6 text-slate-600">Agile estimation doesn't pursue precise hour estimates, but rather uses relative estimation to understand effort. Story points are abstract units representing complexity, effort, and uncertainty. The total story points completed by a team in one iteration is called "velocity."</p>
@@ -198,10 +223,12 @@
                             <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Team Velocity Tracking</h3>
                             <p class="text-sm text-slate-500 mb-4 text-center">Speed used for future prediction, not performance evaluation. It naturally fluctuates. Click the button below to simulate completing an iteration.</p>
                             <div class="chart-container">
-                                <canvas id="velocityChart"></canvas>
+                                <canvas id="velocityChart" aria-label="Team velocity chart showing story points completed per sprint"></canvas>
                             </div>
                             <div class="text-center mt-4">
-                                <button id="addSprintButton" class="bg-teal-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors">Complete New Sprint</button>
+                                <button id="addSprintButton"
+                                        class="bg-teal-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors"
+                                        aria-label="Add new sprint to velocity chart">Complete New Sprint</button>
                             </div>
                         </div>
                         <div>
@@ -211,24 +238,44 @@
                                 <p class="font-semibold">User Story:</p>
                                 <p id="poker-story" class="text-slate-800 mb-4">"As a user, I want to register an account using email and password."</p>
                                 <p class="font-semibold mb-2">Select your story point estimate:</p>
-                                <div class="flex justify-center flex-wrap gap-2">
-                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200" data-value="1">1</button>
-                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200" data-value="2">2</button>
-                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200" data-value="3">3</button>
-                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200" data-value="5">5</button>
-                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200" data-value="8">8</button>
+                                <div class="flex justify-center flex-wrap gap-2" role="group" aria-label="Planning Poker cards">
+                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200"
+                                            data-value="1"
+                                            aria-label="Estimate 1 story point"
+                                            tabindex="0">1</button>
+                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200"
+                                            data-value="2"
+                                            aria-label="Estimate 2 story points"
+                                            tabindex="0">2</button>
+                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200"
+                                            data-value="3"
+                                            aria-label="Estimate 3 story points"
+                                            tabindex="0">3</button>
+                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200"
+                                            data-value="5"
+                                            aria-label="Estimate 5 story points"
+                                            tabindex="0">5</button>
+                                    <button class="poker-card w-12 h-16 bg-white rounded-lg shadow font-bold text-xl border-2 border-slate-200"
+                                            data-value="8"
+                                            aria-label="Estimate 8 story points"
+                                            tabindex="0">8</button>
                                 </div>
-                                <div id="poker-result" class="mt-4 text-slate-600 h-12"></div>
+                                <div id="poker-result" class="mt-4 text-slate-600 h-12" role="status" aria-live="polite"></div>
                             </div>
                         </div>
                     </div>
                     <div class="bg-teal-50 p-6 md:p-8 rounded-xl shadow-sm mt-8">
                         <h2 class="text-2xl font-bold text-teal-700 mb-4">✨ Smart User Story Generator</h2>
                         <p class="mb-4 text-slate-600">Input a high-level product vision and let AI generate executable user stories with story point estimates, helping you understand how to transform ideas into agile backlog items.</p>
-                        <textarea id="vision-input" class="w-full h-24 p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4" placeholder="Example: Create a campus marketplace app where students can easily buy and sell second-hand items."></textarea>
-                        <button id="generate-stories-btn" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                        <textarea id="vision-input"
+                                  class="w-full h-24 p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4"
+                                  placeholder="Example: Create a campus marketplace app where students can easily buy and sell second-hand items."
+                                  aria-label="Enter product vision"></textarea>
+                        <button id="generate-stories-btn"
+                                class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center"
+                                aria-label="Generate user stories from vision">
                             <span id="generate-text">Generate User Stories ✨</span>
-                            <span id="generate-spinner" class="hidden animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full ml-2"></span>
+                            <span id="generate-spinner" class="hidden animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full ml-2" aria-hidden="true"></span>
                         </button>
                         <div id="generated-output" class="bg-white p-4 mt-6 rounded-lg border border-slate-200 space-y-4">
                             <p id="output-placeholder" class="text-slate-400 italic text-center">Generated user stories and estimates will appear here...</p>
@@ -237,7 +284,7 @@
                 </div>
             </section>
 
-            <section id="pmbok" class="content-section">
+            <section id="pmbok" class="content-section" role="tabpanel" aria-labelledby="tab-pmbok">
                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
                     <h2 class="text-2xl font-bold text-teal-600 mb-4">Connecting Agile with PMBOK</h2>
                     <p class="mb-6 text-slate-600">While Agile and traditional project management (PMBOK) may seem different, they can complement each other effectively. Understanding their relationship helps you apply the right approach in different contexts and scale agile practices in larger organizations.</p>
@@ -290,357 +337,22 @@
         </main>
     </div>
 
-    <script>
-        // Navigation functionality
-        document.querySelectorAll('.nav-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons and sections
-                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-                
-                // Add active class to clicked button and corresponding section
-                button.classList.add('active');
-                document.getElementById(button.dataset.target).classList.add('active');
-            });
-        });
+    <!-- Screen reader only class -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
 
-        // Roadmap diagram interaction
-        const diagramItems = document.querySelectorAll('.diagram-item');
-        const detailsTitle = document.getElementById('details-title');
-        const detailsContent = document.getElementById('details-content');
-
-        const details = {
-            'diagram-vision': {
-                title: 'Product Vision',
-                content: `
-                    <p><strong>Definition:</strong> A concise statement describing the future state of the product and its value proposition.</p>
-                    <p><strong>Purpose:</strong> Provides direction and inspiration for all product decisions.</p>
-                    <p><strong>Example:</strong> "To be the most trusted platform for peer-to-peer learning, connecting students worldwide through interactive study groups."</p>
-                    <p><strong>Key Elements:</strong></p>
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Target audience and their needs</li>
-                        <li>Unique value proposition</li>
-                        <li>Long-term aspirational goals</li>
-                        <li>Success metrics and outcomes</li>
-                    </ul>
-                `
-            },
-            'diagram-roadmap': {
-                title: 'Product Roadmap',
-                content: `
-                    <p><strong>Definition:</strong> A strategic document outlining the product's evolution over time.</p>
-                    <p><strong>Purpose:</strong> Communicates direction, priorities, and progress to stakeholders.</p>
-                    <p><strong>Time Horizon:</strong> Typically covers 6-18 months with decreasing detail over time.</p>
-                    <p><strong>Key Components:</strong></p>
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Themes and initiatives</li>
-                        <li>Key milestones and deliverables</li>
-                        <li>Resource allocation</li>
-                        <li>Dependencies and assumptions</li>
-                    </ul>
-                `
-            },
-            'diagram-release': {
-                title: 'Release Plan',
-                content: `
-                    <p><strong>Definition:</strong> Detailed plan for delivering specific features in a release.</p>
-                    <p><strong>Purpose:</strong> Bridges strategy with tactical execution.</p>
-                    <p><strong>Time Horizon:</strong> Typically 2-12 weeks depending on release cycle.</p>
-                    <p><strong>Key Components:</strong></p>
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Specific features and user stories</li>
-                        <li>Sprint breakdown and timeline</li>
-                        <li>Team capacity and velocity</li>
-                        <li>Risk mitigation strategies</li>
-                    </ul>
-                `
-            }
-        };
-
-        diagramItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // Remove selected class from all items
-                diagramItems.forEach(i => i.classList.remove('selected'));
-                
-                // Add selected class to clicked item
-                item.classList.add('selected');
-                
-                // Update details panel
-                const detail = details[item.id];
-                if (detail) {
-                    detailsTitle.textContent = detail.title;
-                    detailsContent.innerHTML = detail.content;
-                }
-            });
-        });
-
-        // Velocity Chart
-        const ctx = document.getElementById('velocityChart').getContext('2d');
-        let velocityData = [23, 27, 31, 25, 29, 33];
-        let sprintLabels = ['Sprint 1', 'Sprint 2', 'Sprint 3', 'Sprint 4', 'Sprint 5', 'Sprint 6'];
-
-        const velocityChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: sprintLabels,
-                datasets: [{
-                    label: 'Story Points Completed',
-                    data: velocityData,
-                    backgroundColor: 'rgba(13, 148, 136, 0.6)',
-                    borderColor: 'rgba(13, 148, 136, 1)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Story Points'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Sprint'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                }
-            }
-        });
-
-        // Add Sprint Button
-        document.getElementById('addSprintButton').addEventListener('click', () => {
-            const newVelocity = Math.floor(Math.random() * 15) + 20; // Random between 20-35
-            const newSprintNumber = velocityData.length + 1;
-            
-            velocityData.push(newVelocity);
-            sprintLabels.push(`Sprint ${newSprintNumber}`);
-            
-            velocityChart.data.labels = sprintLabels;
-            velocityChart.data.datasets[0].data = velocityData;
-            velocityChart.update();
-        });
-
-        // Planning Poker
-        const pokerCards = document.querySelectorAll('.poker-card');
-        const pokerResult = document.getElementById('poker-result');
-        const userStories = [
-            "As a user, I want to register an account using email and password.",
-            "As a student, I want to search for study materials by course and topic.",
-            "As a seller, I want to upload photos of my items with descriptions.",
-            "As a buyer, I want to filter search results by price range and condition.",
-            "As a user, I want to receive notifications when someone messages me."
-        ];
-
-        pokerCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const value = card.dataset.value;
-                const teamEstimates = [1, 2, 3, 5, 8];
-                const randomTeamEstimate = teamEstimates[Math.floor(Math.random() * teamEstimates.length)];
-                
-                pokerResult.innerHTML = `
-                    <p>Your estimate: <strong>${value} points</strong></p>
-                    <p>Team average: <strong>${randomTeamEstimate} points</strong></p>
-                    <p class="text-sm mt-2">${value == randomTeamEstimate ? '✅ Consensus reached!' : '💬 Discussion needed to align estimates'}</p>
-                `;
-                
-                // Change to new story
-                setTimeout(() => {
-                    const newStory = userStories[Math.floor(Math.random() * userStories.length)];
-                    document.getElementById('poker-story').textContent = `"${newStory}"`;
-                    pokerResult.innerHTML = '';
-                }, 3000);
-            });
-        });
-
-        // User Story Generator (Mock functionality)
-        document.getElementById('generate-stories-btn').addEventListener('click', () => {
-            const vision = document.getElementById('vision-input').value;
-            const generateBtn = document.getElementById('generate-stories-btn');
-            const generateText = document.getElementById('generate-text');
-            const generateSpinner = document.getElementById('generate-spinner');
-            const output = document.getElementById('generated-output');
-            
-            if (!vision.trim()) {
-                alert('Please enter a product vision first.');
-                return;
-            }
-            
-            // Show loading state
-            generateText.textContent = 'Generating...';
-            generateSpinner.classList.remove('hidden');
-            generateBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                const mockStories = [
-                    { story: "As a student, I want to create an account so that I can access the marketplace.", points: 3 },
-                    { story: "As a seller, I want to post items with photos and descriptions so that buyers can see what I'm selling.", points: 5 },
-                    { story: "As a buyer, I want to search for items by category so that I can find what I need quickly.", points: 8 },
-                    { story: "As a user, I want to message other users so that I can negotiate prices and arrange meetups.", points: 5 },
-                    { story: "As a seller, I want to mark items as sold so that buyers know they're no longer available.", points: 2 }
-                ];
-                
-                output.innerHTML = `
-                    <h4 class="font-semibold text-slate-800 mb-3">Generated User Stories:</h4>
-                    ${mockStories.map(item => `
-                        <div class="border-l-4 border-teal-500 pl-4 py-2">
-                            <p class="text-slate-700">${item.story}</p>
-                            <p class="text-sm text-teal-600 font-medium">Estimated: ${item.points} story points</p>
-                        </div>
-                    `).join('')}
-                    <div class="mt-4 p-3 bg-teal-50 rounded">
-                        <p class="text-sm text-teal-700"><strong>Total Estimated Effort:</strong> ${mockStories.reduce((sum, item) => sum + item.points, 0)} story points</p>
-                        <p class="text-sm text-teal-600 mt-1">Estimated Development Time: 2-3 sprints (assuming 10-15 points per sprint)</p>
-                    </div>
-                `;
-                
-                // Reset button state
-                generateText.textContent = 'Generate User Stories ✨';
-                generateSpinner.classList.add('hidden');
-                generateBtn.disabled = false;
-            }, 2000);
-        });
-
-        // Release Plan Generator (Mock functionality)
-        document.getElementById('generate-release-btn').addEventListener('click', () => {
-            const goal = document.getElementById('release-goal-input').value;
-            const generateBtn = document.getElementById('generate-release-btn');
-            const generateText = document.getElementById('generate-release-text');
-            const generateSpinner = document.getElementById('generate-release-spinner');
-            const output = document.getElementById('generated-release-output');
-            
-            if (!goal.trim()) {
-                alert('Please enter a release goal first.');
-                return;
-            }
-            
-            // Show loading state
-            generateText.textContent = 'Generating...';
-            generateSpinner.classList.remove('hidden');
-            generateBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                output.innerHTML = `
-                    <h4 class="font-semibold text-slate-800 mb-3">Release Plan Outline:</h4>
-                    <div class="space-y-4">
-                        <div>
-                            <h5 class="font-medium text-slate-700">🎯 Release Goal</h5>
-                            <p class="text-sm text-slate-600">${goal}</p>
-                        </div>
-                        <div>
-                            <h5 class="font-medium text-slate-700">📦 Key Features</h5>
-                            <ul class="text-sm text-slate-600 list-disc list-inside">
-                                <li>User authentication and profile management</li>
-                                <li>Core photo upload and sharing functionality</li>
-                                <li>Basic social interactions (likes, comments)</li>
-                                <li>Mobile-responsive design</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h5 class="font-medium text-slate-700">🗓️ Timeline</h5>
-                            <p class="text-sm text-slate-600">6-8 weeks (3-4 sprints)</p>
-                        </div>
-                        <div>
-                            <h5 class="font-medium text-slate-700">⚠️ Key Risks</h5>
-                            <ul class="text-sm text-slate-600 list-disc list-inside">
-                                <li>Third-party API integration delays</li>
-                                <li>Mobile performance optimization challenges</li>
-                                <li>User acceptance testing feedback</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h5 class="font-medium text-slate-700">📊 Success Metrics</h5>
-                            <ul class="text-sm text-slate-600 list-disc list-inside">
-                                <li>100+ active users in first month</li>
-                                <li>Average session duration > 5 minutes</li>
-                                <li>Photo upload success rate > 95%</li>
-                            </ul>
-                        </div>
-                    </div>
-                `;
-                
-                // Reset button state
-                generateText.textContent = 'Generate Release Plan ✨';
-                generateSpinner.classList.add('hidden');
-                generateBtn.disabled = false;
-            }, 2000);
-        });
-
-        // PMBOK Relationship Explanation
-        document.getElementById('explain-relationship-btn').addEventListener('click', () => {
-            const explanation = document.getElementById('relationship-explanation');
-            const content = document.getElementById('relationship-content');
-            
-            if (explanation.classList.contains('hidden')) {
-                content.innerHTML = `
-                    <div class="space-y-4">
-                        <div>
-                            <h5 class="font-semibold text-slate-800">Integration Strategies</h5>
-                            <p>Modern software development often benefits from combining PMBOK's structured approach with Agile's flexibility. Here's how they can work together:</p>
-                        </div>
-                        
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div class="bg-white p-4 rounded border">
-                                <h6 class="font-medium text-blue-700">Project Initiation (PMBOK)</h6>
-                                <ul class="text-sm text-slate-600 mt-2 space-y-1">
-                                    <li>• Stakeholder analysis</li>
-                                    <li>• Charter development</li>
-                                    <li>• Risk assessment</li>
-                                    <li>• Resource planning</li>
-                                </ul>
-                            </div>
-                            <div class="bg-white p-4 rounded border">
-                                <h6 class="font-medium text-green-700">Execution (Agile)</h6>
-                                <ul class="text-sm text-slate-600 mt-2 space-y-1">
-                                    <li>• Sprint planning</li>
-                                    <li>• Daily standups</li>
-                                    <li>• Retrospectives</li>
-                                    <li>• Continuous delivery</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h5 class="font-semibold text-slate-800">When to Use Each Approach</h5>
-                            <div class="grid md:grid-cols-3 gap-4 mt-2">
-                                <div class="bg-blue-50 p-3 rounded">
-                                    <h6 class="font-medium text-blue-800">PMBOK Focus</h6>
-                                    <p class="text-sm text-blue-700 mt-1">Large, complex projects with fixed requirements and regulatory constraints</p>
-                                </div>
-                                <div class="bg-green-50 p-3 rounded">
-                                    <h6 class="font-medium text-green-800">Agile Focus</h6>
-                                    <p class="text-sm text-green-700 mt-1">Innovative products with evolving requirements and need for rapid feedback</p>
-                                </div>
-                                <div class="bg-purple-50 p-3 rounded">
-                                    <h6 class="font-medium text-purple-800">Hybrid Approach</h6>
-                                    <p class="text-sm text-purple-700 mt-1">Enterprise software with both stability and innovation requirements</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h5 class="font-semibold text-slate-800">Practical Implementation</h5>
-                            <p>In your CS/SE career, you'll likely encounter both approaches. Understanding when and how to apply each methodology will make you a more effective software engineer and project contributor.</p>
-                        </div>
-                    </div>
-                `;
-                explanation.classList.remove('hidden');
-            } else {
-                explanation.classList.add('hidden');
-            }
-        });
-    </script>
+    <!-- External JavaScript -->
+    <script src="js/app.js" defer></script>
 </body>
 </html>
